@@ -1,0 +1,1 @@
+bios-611-projectI am interested in analyzing data on stages and participants in the Tour de France from 1903 to 2021. Broadly, I plan to investigate the following three things:(i) how the course has changed over time,(ii) how rider performance has changed over time,(iii) what are common characteristics of winning riders.
