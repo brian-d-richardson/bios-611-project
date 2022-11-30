@@ -1,0 +1,118 @@
+---
+output:
+  html_document:
+      code_folding: "hide"
+---
+# TDF Exploration
+
+## Brian Richardson
+## 11/28/2022
+
+In this program we do exploratory data analysis on Tour de France data using data obtained from: https://github.com/thomascamminady/LeTourDataSet.
+
+The Tour de France is a multi-stage cycling race that has been held in France annually since 1903, with the exception several canceled tours during World War I and II. Data are available on the stages and riders in each tour from 1903 to 2021. Each tour involves between 6 and 31 stages and has between 10 and 174 riders.
+
+```{r setup, echo=F, message=F, warning=F}
+
+# Prepare workspace
+rm(list=ls())
+
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(imager)
+
+```
+
+```{r load-data}
+
+### load plots
+
+locations_plot = load.image("figures/locations_plot.png")
+riders_per_year_plot = load.image("figures/riders_per_year_plot.png")
+riding_time_over_time_plot = load.image("figures/riding_time_over_time_plot.png")
+stages_per_year_plot = load.image("figures/stages_per_year_plot.png")
+team_wins_plot = load.image("figures/team_wins_plot.png")
+rider_wins_plot = load.image("figures/rider_wins_plot.png")
+avg_speed_over_time_plot = load.image("figures/avg_speed_over_time_plot.png")
+avg_speed_over_time_plot_dope = load.image("figures/avg_speed_over_time_plot_dope.png")
+distance_over_time_plot = load.image("figures/distance_over_time_plot.png")
+
+```
+
+
+The number of stages per year has changed over time. We can investigate this change with the following plot.
+
+```{r stages-plot}
+
+plot(stages_per_year_plot, axes = F)
+
+```
+
+The number of riders per year has changed over time. We can investigate this change with the following plot.
+
+```{r rider-count-plot}
+
+plot(riders_per_year_plot, axes = F)
+
+```
+
+Some starting and ending locations of stages are more common than others. We can look at which locations are most common.
+
+```{r locations-plot}
+
+plot(locations_plot, axes = F)
+
+```
+
+Which teams have won the most tours?
+
+```{r team-wins-plot}
+
+plot(team_wins_plot, axes = F)
+
+```
+
+Which riders have won the most tours?
+
+```{r rider-wins-plot}
+
+plot(rider_wins_plot, axes = F)
+
+```
+
+How has the total distance of each tour changed over time?
+
+```{r distance-plot}
+
+plot(distance_over_time_plot, axes = F)
+
+```
+
+Plot the total riding time by rider for each tour.
+
+```{r riding-time-plot}
+
+plot(riding_time_over_time_plot, axes = F)
+
+```
+
+Plot average speed by rider for each tour.
+
+```{r avg-speed-plot}
+
+plot(avg_speed_over_time_plot, axes = F)
+  
+```
+
+
+Take a closer look at the period surrounding Lance Armstrong's illegitimate wins.
+
+```{r avg-speed-plot-dope}
+
+plot(avg_speed_over_time_plot_dope, axes = F)
+
+```
+
+
+
