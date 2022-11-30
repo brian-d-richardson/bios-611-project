@@ -16,8 +16,6 @@
 # Prepare workspace
 ################################################################################
 
-#setwd("C:/Users/Brian Richardson/OneDrive - University of North Carolina at Chapel Hill/Desktop/Fall 2022/BIOS 611/bios-611-project")
-
 rm(list=ls())
 
 library(ggplot2)
@@ -34,7 +32,7 @@ riders <- read.csv("source-data/TDF_Riders_History.csv")
 stages <- read.csv("source-data/TDF_Stages_History.csv")
 
 ################################################################################
-# Clean data
+# Clean stages data
 ################################################################################
 
 # change to tibble
@@ -53,12 +51,16 @@ stages %>%
 # create variables for stage number, start location, and end location
 stages <- stages %>% 
   mutate(separate(stages, stage, into = c("stage_no", "start_loc", "end_loc"),
-                  sep = c(":|>"))) %>% 
+                  sep = c(":| >"))) %>% 
   mutate_at(.vars = c("stage_no", "start_loc", "end_loc"),
             factor)
 
 # Examine all variables for inconsistencies
 summary(stages)
+
+################################################################################
+# Clean riders data
+################################################################################
 
 # change to tibble
 riders <- as_tibble(riders)

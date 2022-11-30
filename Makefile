@@ -1,3 +1,9 @@
+# create directories
+.created-dirs:
+	mkdir -p derived-data
+	mkdir -p figures
+	touch .created-dirs
+
 # clean source data and output derived data
 derived-data/TDF_Stages_History_Clean.csv derived-data/TDF_Riders_History_Clean.csv:\
  source-data/TDF_Riders_History.csv\
@@ -5,9 +11,31 @@ derived-data/TDF_Stages_History_Clean.csv derived-data/TDF_Riders_History_Clean.
  tdf-cleaning.R
 	Rscript tdf-cleaning.R
 
-# produce report
-tdf-exploration.pdf:\
+# produce figures
+figures/locations_plot.png
+figures/riders_per_year_plot.png
+figures/riding_time_over_time_plot.png
+figures/stages_per_year_plot.png
+figures/team_wins_plot.png
+figures/rider_wins_plot.png
+figures/avg_speed_over_time_plot.png
+figures/avg_speed_over_time_plot_dope.png
+figures/distance_over_time_plot.png:\
  derived-data/TDF_Riders_History_Clean.csv\
  derived-data/TDF_Stages_History_Clean.csv\
- tdf-exploration.Rmd
-	R -e "rmarkdown::render(\"tdf-exploration.Rmd\", output_format=\"pdf_document\")"
+ tdf-figures.R
+	Rscript tdf-figures.R
+
+# produce report
+tdf-report.pdf:\
+ figures/locations_plot.png
+ figures/riders_per_year_plot.png
+ figures/riding_time_over_time_plot.png
+ figures/stages_per_year_plot.png
+ figures/team_wins_plot.png
+ figures/rider_wins_plot.png
+ figures/avg_speed_over_time_plot.png
+ figures/avg_speed_over_time_plot_dope.png
+ figures/distance_over_time_plot.png
+ tdf-report.Rmd
+	R -e "rmarkdown::render(\"tdf-report.Rmd\", output_format=\"html_document\")"
