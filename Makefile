@@ -21,7 +21,8 @@ figures/team_wins_plot.png\
 figures/rider_wins_plot.png\
 figures/avg_speed_over_time_plot.png\
 figures/avg_speed_over_time_plot_dope.png\
-figures/distance_over_time_plot.png:\
+figures/distance_over_time_plot.png\
+figures/rel_ranks_plot.png:\
  .created-dirs\
  derived-data/TDF_Riders_History_Clean.csv\
  derived-data/TDF_Stages_History_Clean.csv\
@@ -40,5 +41,6 @@ tdf-report.html:\
  figures/avg_speed_over_time_plot.png\
  figures/avg_speed_over_time_plot_dope.png\
  figures/distance_over_time_plot.png\
+ figures/rel_ranks_plot.png\
  tdf-report.Rmd
 	R -e "rmarkdown::render(\"tdf-report.Rmd\", output_format=\"html_document\")"

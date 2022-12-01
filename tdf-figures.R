@@ -159,7 +159,7 @@ rider_wins_plot
 ### Plot total distance ridden for each rider for each year
 
 ggplot(riders2, aes(x = year, y = distance_km)) +
-  geom_point() +
+  geom_line() +
   theme(legend.position = "none") +
   ggtitle("Total Distance Ridden from 1919 - 2021") +
   xlab("Year") +
@@ -210,7 +210,7 @@ ggsave(plot = avg_speed_over_time_plot,
 avg_speed_over_time_plot
 
 
-# Plot average speed over years and overlay with average speed of winners around the period of Lance Armstrong's "wins"
+### Plot average speed over years and overlay with average speed of winners around the period of Lance Armstrong's "wins"
 
 ggplot(filter(riders2, year >= 1992 & year <= 2012 & avg_speed > 30),
        aes(x = year, y = avg_speed)) +
@@ -237,5 +237,44 @@ ggsave(plot = avg_speed_over_time_plot_dope,
 avg_speed_over_time_plot_dope
 
 
+### Plot ranking of riders who compete in multiple tours
+
+# count number of tours by rider
+riders3 = riders %>%
+  group_by(rider) %>% 
+  arrange(by = year) %>% 
+  summarise(n.tours = n())
+
+# select tour number and rank (relative to first tour) for each rider
+riders4 = riders %>% 
+  right_join(riders3, by = "rider") %>% 
+  group_by(rider) %>% 
+  arrange(-n.tours, rider) %>% 
+  mutate(ones = 1,
+         tour.counter = cumsum(ones),
+         rank1 = first(rank),
+         rel.rank = rank - rank1) %>% 
+  select(rider, n.tours, tour.counter, rel.rank)
+
+# plot change in rank over time (filter to riders who compete in >= 6 tours)
+riders4 %>%
+  filter(n.tours >= 6) %>% 
+  ggplot(aes(x = tour.counter, y = rel.rank)) +
+  geom_line(aes(group = rider), alpha = .2) +
+  geom_smooth(formula = "y ~ x", color = "#FF33CC", fill = "#FF33CC",
+              method = "loess", span = 0.5, se = T) +
+  geom_hline(yintercept = 0,
+             color = "#66CC33", linetype = "dashed") +
+  xlab("Tour Number") +
+  ylab("Relative Rank") +
+  ggtitle("Rider Ranks Relative to Rank at First Tour",
+          subtitle = "with LOESS Curve and 95% Confidence Band") -> rel_ranks_plot
+
+ggsave(plot = rel_ranks_plot,
+       filename = "figures/rel_ranks_plot.png",
+       units = "cm", width = 18, height = 10)
+
+rel_ranks_plot
 
 
+  

@@ -10,7 +10,7 @@ output:
 
 In this program we do exploratory data analysis on Tour de France data using data obtained from: https://github.com/thomascamminady/LeTourDataSet.
 
-The Tour de France is a multi-stage cycling race that has been held in France annually since 1903, with the exception several canceled tours during World War I and II. Data are available on the stages and riders in each tour from 1903 to 2021. Each tour involves between 6 and 31 stages and has between 10 and 174 riders.
+The Tour de France is a multi-stage cycling race that has been held in France annually since 1903, with the exception several canceled tours during World War I and II. Data are available on the stages and riders in each tour from 1903 to 2021.
 
 ```{r setup, echo=F, message=F, warning=F}
 
@@ -37,11 +37,11 @@ rider_wins_plot = load.image("figures/rider_wins_plot.png")
 avg_speed_over_time_plot = load.image("figures/avg_speed_over_time_plot.png")
 avg_speed_over_time_plot_dope = load.image("figures/avg_speed_over_time_plot_dope.png")
 distance_over_time_plot = load.image("figures/distance_over_time_plot.png")
+rel_ranks_plot = load.image("figures/rel_ranks_plot.png")
 
 ```
 
-
-The number of stages per year has changed over time. We can investigate this change with the following plot.
+Each Tour is a multi-stage race, where riders compete in one stage per day. The number of stages per year has varied over time between 6 and 31. We can investigate this change with the following plot. In the first Tour in 1903, there were only 6 stages. This count rose on average until it peaked at 31 stages in 1937. Since in 1999, the Tour de France has had a constant 21 stages per Tour.
 
 ```{r stages-plot}
 
@@ -49,39 +49,7 @@ plot(stages_per_year_plot, axes = F)
 
 ```
 
-The number of riders per year has changed over time. We can investigate this change with the following plot.
-
-```{r rider-count-plot}
-
-plot(riders_per_year_plot, axes = F)
-
-```
-
-Some starting and ending locations of stages are more common than others. We can look at which locations are most common.
-
-```{r locations-plot}
-
-plot(locations_plot, axes = F)
-
-```
-
-Which teams have won the most tours?
-
-```{r team-wins-plot}
-
-plot(team_wins_plot, axes = F)
-
-```
-
-Which riders have won the most tours?
-
-```{r rider-wins-plot}
-
-plot(rider_wins_plot, axes = F)
-
-```
-
-How has the total distance of each tour changed over time?
+The total distance over all stages of each tour has also changed over time. Unfortunately, accurate distances are not available for the first 16 Tours. The following plot shows how the total distance has changed from 1919 to 2003. Interestingly, the total distance has decreased on average, even though the number of stages does not show such a monotone trend over this time period.
 
 ```{r distance-plot}
 
@@ -89,7 +57,41 @@ plot(distance_over_time_plot, axes = F)
 
 ```
 
-Plot the total riding time by rider for each tour.
+The number of riders per Tour has varied over time between 10 and 174. We can investigate this change with the following plot. In the first 2 decades, the Tour de France had fewer than 50 riders each year, with as little as 10 in 1919. Since then, the number of riders has increased on average with a maximum of 174 in 2016.
+
+NOTE: this data set only has 3 riders competing in 1966, which is inconsistent with other sources and is thus ommitted.
+
+```{r rider-count-plot}
+
+plot(riders_per_year_plot, axes = F)
+
+```
+
+Each year, the different stages of the Tour uses a differnt route that takes riders across France and into neighboring countries. The start and finish of the Tour are particularly important events. The following plot demonstrates which locations are most commonly chosen as the start and finish. Although there are more than 600 distinct locations, we show only those that have hosted at least 25 starts or finishes
+
+```{r locations-plot}
+
+plot(locations_plot, axes = F)
+
+```
+
+The Tour de France is scored both individually, but each rider represents a team. The following plot shows teams have had more than one Tour winner. It is important to note that many teams cycled through since 1903, and several teams have changed names during that time. For simplicity, we consider a teams with different names to be distinct.
+
+```{r team-wins-plot}
+
+plot(team_wins_plot, axes = F)
+
+```
+
+We are also interested in which individuals have won the most Tours. The following plot shows which riders have one more than one Tour. that there are four cyclists tied for the most wins, each with 5. One notable cyclist who is missing here is Lance Armstrong, who finished first in 7 consecutive Tours, from 1999 to 2006, but was later disqualified for using performance enhancing drugs.
+
+```{r rider-wins-plot}
+
+plot(rider_wins_plot, axes = F)
+
+```
+
+We previously saw that the total distance ridden per Tour has decreased over time. We may expect that with this, the total riding time has decreased as well. Whereas total distance is constant across all riders within a given year, riding time varies rider to rider. The following plot shows the distribution of riding times for each Tour from 1919 to 2021. As expected, the riding times decrease on average. Another interesting feature is that the within-year variability of riding times decreases over this time period. This tells us that , for the first few decades, riders were generally more spread out. By the mid 1930s, riders were on average much closer together.
 
 ```{r riding-time-plot}
 
@@ -97,7 +99,7 @@ plot(riding_time_over_time_plot, axes = F)
 
 ```
 
-Plot average speed by rider for each tour.
+We've seen how the total distance and total riding time has changed over the course of the Tour de France. We can combine these two features to investigate the average speed of riders over time. We may expect that riders have on average gotten faster since 1903 due to improved equipment and training. The following plot shows the distribution of average speeds for each Tour. The purple curve is a LOESS curve, which shows the trend of average speeds over the years. The green curve is a LOESS curve fit only to the winners. This plot confirms that riding times have generally increased since 1903, but have possibly leveled off since the early 2000s.
 
 ```{r avg-speed-plot}
 
@@ -105,8 +107,7 @@ plot(avg_speed_over_time_plot, axes = F)
   
 ```
 
-
-Take a closer look at the period surrounding Lance Armstrong's illegitimate wins.
+As previously mentioned, Lance Armstrong was disqualified after finishing first in 7 consecutive Tours (1999-2006). We are interested in whether his use of performance enhancing drugs and the reaction of the sport's authorities influenced rider performance during and after the period of Armstrong's illegitimate wins. The following plot shows the distributions of average speeds for the 21-year period surrounding Armstrong's illegitimate wins, along with LOESS curves for all cyclists and for winners only. Since there were technically no winners from 1999 to 2006, the second place riders were treated as winners for the purpose of this analysis. There is not an obvious pattern in this plot.
 
 ```{r avg-speed-plot-dope}
 
@@ -114,5 +115,11 @@ plot(avg_speed_over_time_plot_dope, axes = F)
 
 ```
 
+Many riders compete in several Tours during their cycling careers. we are interested in how a rider's performance changes over the course of their career. Here we measure performance by rank, i.e. where a rider places at a given Tour. To measure change in performance, we use relative rank, i.e., the difference between a riders rank at a given Tour and their rank at their first tour. By this definition, each rider has a relative rank of 0 at their first Tour, a negative relative rank at subsequent tours indicates an improvement. Does rider performance improve as they gain experience? Or does it decrease as they age? The following plot shows relative ranks of all riders who competed in at least 6 tours. The purple LOESS curve and 95% confidence region show the trend of relative ranks. It seems that, on average, riders improve over their first 2-4 Tours, then tend to perform worse in following Tours.
 
+```{r rel-ranks-plot}
+
+plot(rel_ranks_plot, axes = F)
+
+```
 
